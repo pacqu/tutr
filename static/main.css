@@ -1,5 +1,15 @@
-#fullscreen{
+#screenFiller {
     position: absolute;
     top: 0; right: 0; bottom: 0; left: 0;
-    color: #FFC687
+    background-color:#FFC687;
+}
+.logo{
+  position:absolute;
+  top:45%;
+  left:45%;
+  font-size:36px
+}
+#info{
+  position:absolute;
+  top:100%;
 }
