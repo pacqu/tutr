@@ -1,18 +1,39 @@
+body {
+     background-color:#FFFBF8;
+     
+     text-align:center;
+     font-family: 'Slabo 27px', serif;
+     font-size: 20px;
+     color:#FFC687;
+} 
+
 #screenFiller {
     position: absolute;
     top: 0; right: 0; bottom: 0; left: 0;
     background-color:#FFC687;
 }
 .logo{
+<<<<<<< HEAD
   position:absolute;
   top:50%;
   tex-align:center;
   font-size:36px
+=======
+  position:relative;
+  top:200px;
+  /*left:42.5% ;*/
+
+  font-size:150px;
+  color: #FFFBF8;
+>>>>>>> 3f4f5d8de9a081fc8f2d09af1a987a2a60c983fb
 }
 #info{
-  position:absolute;
+  max-width:100%;
+  margin=auto;
+  position:relative;
   top:100%;
 }
+<<<<<<< HEAD
 h1{
     font-family:"Open Sans", Verdana;
     font-size:36px;
@@ -24,4 +45,10 @@ h2{
 p{
     font-family:"Open Sans", Verdana;
     font-size:12px;
+=======
+
+.col{
+  width=35%;
+  float=left;
+>>>>>>> 3f4f5d8de9a081fc8f2d09af1a987a2a60c983fb
 }
