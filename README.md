@@ -14,7 +14,7 @@ tut.r is a tinder-inspired web app that will match students wanting to find a st
 - geolocation + google maps api to figure out user location, location relative to other users
 
 ##what extras we want to do:
-- set up chat || some means of remote communication
+- set up chat ||blog set up that's constantly updated via Ajax call
 
 ##who's making it all work:
 | role | name | username |
