@@ -2,7 +2,7 @@ body {
      background-color:#FFFBF8;
      
      text-align:center;
-     font-family:"Open Sans", Verdana;	
+     font-family: 'Oxygen', sans-serif;
      font-size: 20px;
      color:#FFC687;
 } 
@@ -15,7 +15,8 @@ body {
 .logo{
   position:relative;
   top:200px;
-  font-size:150px;
+  
+  font-size:200px;
   color: #FFFBF8;
 }
 
@@ -27,14 +28,11 @@ body {
 }
 
 h1{
-    font-family:"Open Sans", Verdana;
     font-size:72px;
 }
 h2{
-    font-family:"Open Sans", Verdana;
     font-size:54px;
 }
 p{
-    font-family:"Open Sans", Verdana;
     font-size:20px;
 }
