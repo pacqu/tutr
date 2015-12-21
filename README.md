@@ -11,6 +11,7 @@ tut.r is a tinder-inspired web app that will match students wanting to find a st
 - SQLite databases to register users || keep track of available users
 - jquery + ajax calls to allow users to interact with each other (scroll display of available users | send messages | etc)
 - bootstrap + propreitary css + javascript to make it all pretty
+- geolocation + google maps api to figure out user location, location relative to other users
 
 ##what extras we want to do:
 - set up chat || some means of remote communication
