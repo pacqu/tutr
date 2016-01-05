@@ -8,7 +8,7 @@ tut.r is a tinder-inspired web app that will match students wanting to find a st
 * if no local study mates are available, users can match with other users to setup remote, virtual study sessions!
 
 ##how we'll make it work: 
-- SQLite databases to register users || keep track of available users
+- sqlite databases to register users || keep track of available users
 - jquery + ajax calls to allow users to interact with each other (scroll display of available users | send messages | etc)
 - bootstrap + propreitary css + javascript to make it all pretty
 - geolocation + google maps api to figure out user location, location relative to other users
@@ -30,7 +30,7 @@ tut.r is a tinder-inspired web app that will match students wanting to find a st
 - settings page
 - matching page
 - register-as-tutor page
-- database - names, subject, (FOR NOW input location), bio, matched/not matched, seen/not seen, picture, (number/skype???)
+- database - names, subject, (for now input location), bio, matched/not matched, seen/not seen, picture, (number/skype???)
 - ajax call for finding a match - goes through database
-- chat (how it's done: blog style page, refreshed by AJAX)
-- connection to facebook (MAYBE)
+- chat (how it's done: blog style page, refreshed by ajax)
+- connection to facebook (maybe)
