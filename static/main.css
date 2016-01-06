@@ -12,6 +12,7 @@ body {
     top: 0; right: 0; bottom: 0; left: 0;
     background-color:#FFC687;
 }
+
 .logo{
   position:relative;
   top:200px;
@@ -31,9 +32,11 @@ body {
 h1{
     font-size:72px;
 }
+
 h2{
     font-size:54px;
 }
+
 p{
     font-size:20px;
 }
