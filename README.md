@@ -34,3 +34,13 @@ tut.r is a tinder-inspired web app that will match students wanting to find a st
 - ajax call for finding a match - goes through database
 - chat (how it's done: blog style page, refreshed by ajax)
 - connection to facebook (maybe)
+
+##timetable
+- 01/07 - database
+- 01/08 - template for signup
+- 01/08 - template for intro
+- 01/08 - main page logged
+- 01/10 - all templates (edit bio, find tutors)
+- 01/14 - ajax calls (chat, tutr search)
+- 01/17 - polish results
+- 01/22 - due date
