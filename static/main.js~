@@ -1,0 +1,1 @@
+<script>$("div.navbar-fixed-top").autoHidingNavbar();</script>
