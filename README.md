@@ -43,4 +43,5 @@ tut.r is a tinder-inspired web app that will match students wanting to find a st
 - 01/10 - all templates (edit bio, find tutors)
 - 01/14 - ajax calls (chat, tutr search)
 - 01/17 - polish results
+- 01/20 - VIDEO car drive machine
 - 01/22 - due date
