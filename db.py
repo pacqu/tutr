@@ -15,7 +15,8 @@ class DatabaseManager():
     connection = sqlite3.connect(DATABASE);
     c = connection.cursor()
     c.execute("""CREATE TABLE IF NOT EXISTS users (
-              fullname text NOT NULL PRIMARY KEY,
+              username text NOT NULL PRIMARY KEY,
+              fullname text NOT NULL,
               password text NOT NULL,
               bioline text NOT NULL,
               availability text NOT NULL,
@@ -28,13 +29,13 @@ class DatabaseManager():
   
   #methods needed:
   #register user 
-   def register_user(self, fullname, password, password, bioline):
+  def register_user(self, username, fullname, password, bioline):
     connection = sqlite3.connect(self.database);
     c = connection.cursor()
     result = True
     try:
       c.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?)',
-                (fullname, Util.hash(password), bioline, 'unavailable', 'unmatched','unknown' ))
+                (username, fullname, Util.hash(password), bioline, 'unavailable', 'unmatched','unknown' ))
     except sqlite3.IntegrityError:
       result = False
     connection.commit()
@@ -42,12 +43,12 @@ class DatabaseManager():
     return result
 
  
-  def is_user_authorized(self, fullname, password):
+  def is_user_authorized(self, username, password):
     connection = sqlite3.connect(self.database)
     c = connection.cursor()
     # We can assume username is a unique field.
     c.execute('SELECT password FROM users WHERE username=?',
-              (fullname,))
+              (username,))
     actual_password = c.fetchone()
     connection.close()
     if actual_password:
@@ -55,7 +56,7 @@ class DatabaseManager():
     return False
 
   #change user info
-  def edit_user(self, user_id, fullname, password, bioline, location):
+  def edit_user(self, username, fullname, password, bioline, location):
     connection = sqlite3.connect(self.database)
     c = connection.cursor()
     try:
@@ -63,75 +64,96 @@ class DatabaseManager():
                 UPDATE users SET fullname=?,password=?,bioline=?,location=?
                 WHERE rowid=?
                 """,
-                (fullname, password, bioline, location, user_id))
+                (fullname, password, bioline, location, username))
       connection.commit()
       connection.close()
       return True
     except:
       connection.close()
-  return False
+      return False
 
   #change availability
-  def is_user_available(self, user_id):
+  def is_user_available(self, username):
     connection = sqlite3.connect(self.database)
     c = connection.cursor()
     # We can assume username is a unique field.                                                                                                                                      
-    c.execute('SELECT availability FROM users WHERE rowid=?',
-              (user_id,))
+    c.execute('SELECT availability FROM users WHERE username=?',
+              (username,))
     avail = c.fetchone()
     connection.close()
     if avail == 'available':
       return True
     return False
     
-  def change_availability(self, user_id):
-    if is_user_available:
+  def change_availability(self, username):
+    if self.is_user_available(username):
       avail = 'unavailable'
     else:
       avail = 'available'
-      connection = sqlite3.connect(self.database)
-      c = connection.cursor()
-      try:
-        c.execute("""                                                                                                                                                                  
+    connection = sqlite3.connect(self.database)
+    c = connection.cursor()
+    try:
+      c.execute("""                                                                                                                                                                  
                 UPDATE users SET availability=?                                                                                                          
-                WHERE rowid=?                                                                                                                                                        
+                WHERE username=?                                                                                                                                                        
                 """,
-                  (avail, user_id))
-        connection.commit()
-        connection.close()
+                (avail, username))
+      connection.commit()
+      connection.close()
       return True
     except:
       connection.close()
-    return False
+      return False
 
   #change matched
-  def is_user_match(self, user_id):
+  def is_user_match(self, username):
     connection = sqlite3.connect(self.database)
     c = connection.cursor()
-    c.execute('SELECT match FROM users WHERE rowid=?',
-              (user_id,))
+    c.execute('SELECT match FROM users WHERE username=?',
+              (username,))
     mat = c.fetchone()
     connection.close()
     if mat == 'matched':
       return True
     return False
 
-  def change_match(self, user_id):
-    if is_user_match:
+  def change_match(self, username):
+    if self.is_user_match(username):
       mat ='unmatched'
     else:
       mat ='matched'
-  connection = sqlite3.connect(self.database)
-  c = connection.cursor()
-  try:
-    c.execute("""
+    connection = sqlite3.connect(self.database)
+    c = connection.cursor()
+    try:
+      c.execute("""
                 UPDATE users SET match=?                                                                                                                           
-                WHERE rowid=?
+                WHERE username=?
                 """,
-              (mat, user_id))
-    connection.commit()
+                (mat, username))
+      connection.commit()
+      connection.close()
+      return True
+    except:
+      connection.close()
+      return False
+
+  def fetch_all_users(self):
+    connection = sqlite3.connect(self.database)
+    c = connection.cursor()
+    c.execute('SELECT * FROM users');
+    users = c.fetchall()
     connection.close()
-    return True
-  except:
-    connection.close()
-    return False
+    return users
+
+if __name__== '__main__':
+  d = DatabaseManager.create()
+  d.register_user("test","marty marty" , 'password', 'ayylmao')
+  users = d.fetch_all_users()
+  test = users[0]
+  print test
+  print 'Should Be False'
+  print d.is_user_match(test[0]);
+  print d.change_match(test[0]);
+  users1 = d.fetch_all_users()
+  test1 = users1[0]
+  print test1
