@@ -86,7 +86,7 @@ class DatabaseManager():
     return False
     
   def change_availability(self, username):
-    if self.is_user_available:
+    if self.is_user_available(username):
       avail = 'unavailable'
     else:
       avail = 'available'
@@ -118,7 +118,7 @@ class DatabaseManager():
     return False
 
   def change_match(self, username):
-    if self.is_user_match:
+    if self.is_user_match(username):
       mat ='unmatched'
     else:
       mat ='matched'
@@ -152,8 +152,8 @@ if __name__== '__main__':
   test = users[0]
   print test
   print 'Should Be False'
-  print d.is_user_available(test[0]);
-  print d.change_availability(test[0]);
+  print d.is_user_match(test[0]);
+  print d.change_match(test[0]);
   users1 = d.fetch_all_users()
   test1 = users1[0]
   print test1
