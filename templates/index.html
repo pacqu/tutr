@@ -21,25 +21,25 @@
       do it all with tut.r.<br>
       find people in your area who want to study with you.
     </p>
-    
+    <form method="POST">
     <p style="display:inline;">
-      
       <div>
-	<button style="background-color:#Ffc687;width:500px;height:50px;color:white;border-radius:15px" id="register" type="button" class="btn-default">
-	  <span style="font-size:20px;">register now </span>
-	</button>
+	<input type="submit" name="submit" value="register" 
+	       style="background-color:#Ffc687;width:500px;height:50px;
+		      color:white;font-size:20px;border-radius:15px" 
+	       class="btn-default"/>
       </div>
       
-    <p>
-      <button style="background-color:#FFc687;width:500px;height:50px;color:white;border-radius:15px" id="signin" type="button" class="btn-default">
-	<span style="font-size:20px;"> log in </span>
-      </button>
-    </p>
-    
+    <div>
+      <input type="submit" name="submit" value="login"
+	     style="background-color:#Ffc687;width:500px;height:50px;                                                                                                              
+                    color:white;font-size:20px;border-radius:15px"
+	     class="btn-default"/>
+    </div>
     </p>
     
   </div>
-
+  </form>
   <script src="../static/main.js">$("div.navbar-fixed-top").autoHidingNavbar();</script>
   
   {% endblock %}
