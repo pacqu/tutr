@@ -31,11 +31,11 @@ def register():
         bioline = "testing fam"
         if  password == cpassword:
             if dbm.register_user(email, fullname, password, bioline):
-                return dbm.fetch_all_users()
+                return str(dbm.fetch_all_users())
             else:
-                return "email already used"
+                return render_template("register.html", message = "email already used")
         else:
-            return "passwords do not match"
+            return render_template("register.html",message = "passwords do not match")
     else:
         return render_template("register.html")
 
