@@ -41,8 +41,16 @@ def register():
 
 @app.route('/login', methods=["GET","POST"])  
 def login():
-  return render_template("index.html")
-
+    if request.method == "POST":
+        email = request.form['email']
+        password = request.form['password']
+        if dbm.is_user_authorized(email,password):
+            return "login worked!"
+        else:
+            return render_template("login.html", message = "Email/Password Incorrect")
+    else:
+      return render_template("login.html")
+    
 if __name__ == '__main__':
   app.debug = True
   app.run(host='0.0.0.0',port=8000)
