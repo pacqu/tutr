@@ -11,18 +11,21 @@ dbm = DatabaseManager.create()
 
 @app.route('/', methods=["GET","POST"])
 def home():
-    if request.method == "GET":
-        return render_template("index.html")
+    if request.method == "POST":
+        sub = request.form['submit']
+        if sub == "register":
+            return redirect(url_for('register'))
+        elif sub == "login":
+            return redirect(url_for('login'))
     else:
-      sub = request.form['submit']
-      if sub == "register":
-        return redirect(url_for('register'))
-      elif sub == "login":
-        return redirect(url_for('login'))
+        return render_template("index.html")
 
 @app.route('/register', methods=["GET","POST"])
 def register():
-  return render_template("register.html")
+    if request.method == "POST":
+        = request.form['']
+    else:
+        return render_template("register.html")
 
 @app.route('/login', methods=["GET","POST"])  
 def login():
