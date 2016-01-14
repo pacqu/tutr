@@ -23,7 +23,19 @@ def home():
 @app.route('/register', methods=["GET","POST"])
 def register():
     if request.method == "POST":
-        = request.form['']
+        fullname = request.form['fullname']
+        email = request.form['email']
+        password = request.form['password']
+        cpassword = request.form['confirmPassword']
+        #bioline = request.form['bioline']
+        bioline = "testing fam"
+        if  password == cpassword:
+            if dbm.register_user(email, fullname, password, bioline):
+                return dbm.fetch_all_users()
+            else:
+                return "email already used"
+        else:
+            return "passwords do not match"
     else:
         return render_template("register.html")
 
