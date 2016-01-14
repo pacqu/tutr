@@ -4,12 +4,16 @@
 
 {% block content %}
 <body>
-
+  {% if message %}
+  <h3>
+    {{ message }}
+  </h3>
+  {% endif %}
   <div id="info">
     
     <h1> Register now.</h1>
     
-    <form role="form" action="/signup" method="POST">
+    <form method="POST">
       
       <div class="form-group">
         <label for="inputFullName">Full Name:</label>
