@@ -6,6 +6,8 @@ from db import DatabaseManager
 from util import Util
 
 app = Flask(__name__)
+app.secret_key = 'jgjb3st'
+
 dbm = DatabaseManager.create()
 
 
@@ -31,6 +33,7 @@ def register():
         bioline = "testing fam"
         if  password == cpassword:
             if dbm.register_user(email, fullname, password, bioline):
+                session['user']=email
                 return str(dbm.fetch_all_users())
             else:
                 return render_template("register.html", message = "email already used")
@@ -45,12 +48,25 @@ def login():
         email = request.form['email']
         password = request.form['password']
         if dbm.is_user_authorized(email,password):
-            return "login worked!"
+            session['user'] = email
+            return redirect(url_for('dashboard'))
         else:
             return render_template("login.html", message = "Email/Password Incorrect")
     else:
       return render_template("login.html")
-    
+
+
+@app.route('/dashboard', methods=["GET","POST"])
+def dashboard():
+    print
+    if session.get('user', None):
+        if request.method == "POST":
+            return "hi"
+        else:
+            return render_template("dashboard.html", user = session.get('user',None))
+    else:
+        return render_template("login.html", message = "You must be logged-in to access Dashboard")
+        
 if __name__ == '__main__':
   app.debug = True
   app.run(host='0.0.0.0',port=8000)
