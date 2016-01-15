@@ -56,21 +56,30 @@ class DatabaseManager():
     return False
 
   #change user info
-  def edit_user(self, fullname, password, bioline, location):
+  def edit_user(self, email,fullname, password, bioline, location):
     connection = sqlite3.connect(self.database)
     c = connection.cursor()
     try:
       c.execute("""
                 UPDATE users SET fullname=?,password=?,bioline=?,location=?
-                WHERE rowid=?
+                WHERE email=?
                 """,
-                (fullname, password, bioline, location, username))
+                (fullname, password, bioline, location, email))
       connection.commit()
       connection.close()
       return True
     except:
       connection.close()
       return False
+  #get user using email  
+  def get_user(self, email):
+    connection = sqlite3.connect(self.database)
+    c = connection.cursor()
+    c.execute('SELECT * FROM users WHERE email=?',
+              (email,));
+    user = c.fetchone()
+    connection.close()
+    return user
 
   #change availability
   def is_user_available(self, email):
