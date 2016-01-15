@@ -13,6 +13,8 @@ dbm = DatabaseManager.create()
 
 @app.route('/', methods=["GET","POST"])
 def home():
+    if session.get('user', None):
+        return redirect('/dashboard')
     if request.method == "POST":
         sub = request.form['submit']
         if sub == "register":
@@ -24,17 +26,20 @@ def home():
 
 @app.route('/register', methods=["GET","POST"])
 def register():
+    if session.get('user', None):
+        return redirect('/dashboard')
     if request.method == "POST":
         fullname = request.form['fullname']
         email = request.form['email']
         password = request.form['password']
         cpassword = request.form['confirmPassword']
-        #bioline = request.form['bioline']
-        bioline = "testing fam"
+        bioline = request.form['bioline']
+        #bioline = "testing fam"
         if  password == cpassword:
             if dbm.register_user(email, fullname, password, bioline):
                 session['user']=email
-                return str(dbm.fetch_all_users())
+                #return str(dbm.fetch_all_users())
+                return redirect('/dashboard')
             else:
                 return render_template("register.html", message = "email already used")
         else:
@@ -44,6 +49,8 @@ def register():
 
 @app.route('/login', methods=["GET","POST"])  
 def login():
+    if session.get('user', None):
+        return redirect('/dashboard')
     if request.method == "POST":
         email = request.form['email']
         password = request.form['password']
@@ -58,15 +65,30 @@ def login():
 
 @app.route('/dashboard', methods=["GET","POST"])
 def dashboard():
-    print
     if session.get('user', None):
         if request.method == "POST":
-            return "hi"
+            page = request.form['page']
+            if page == "Find a Tutor":
+                return render_template()
+            elif page == "Register as a Tutor":
+                return render_template()
+            elif page == "Edit Account Info":
+                return render_template()
+            elif page == "Log Off":
+                return redirect(url_for('logoff'))
+            else:
+                return render_template("dashboard.html", user = session.get('user',None))
         else:
             return render_template("dashboard.html", user = session.get('user',None))
     else:
-        return render_template("login.html", message = "You must be logged-in to access Dashboard")
+        return render_template("login.html", message = "You must be logged-in to access the Dashboard")
         
+@app.route('/logoff')
+def logoff():
+    if session.get('user', None):
+        session['user'] = 0
+    return redirect('/')
+
 if __name__ == '__main__':
   app.debug = True
   app.run(host='0.0.0.0',port=8000)
