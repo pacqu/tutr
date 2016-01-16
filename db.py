@@ -35,7 +35,7 @@ class DatabaseManager():
     result = True
     try:
       c.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?)',
-                (email, fullname, Util.hash(password), bioline, 'unavailable', 'unmatched','unknown' ))
+                (email, fullname, Util.hash(password), bioline, 'unavailable', 'unmatched','unknown location' ))
     except sqlite3.IntegrityError:
       result = False
     connection.commit()
@@ -71,6 +71,7 @@ class DatabaseManager():
     except:
       connection.close()
       return False
+
   #get user using email  
   def get_user(self, email):
     connection = sqlite3.connect(self.database)
@@ -80,6 +81,20 @@ class DatabaseManager():
     user = c.fetchone()
     connection.close()
     return user
+  
+  #methods to get user info using email
+  def get_name(self,email):
+    return self.get_user(email)[1]
+  
+  def get_bio(self,email):
+    return self.get_user(email)[3]
+
+  def get_location(self,email):
+    return self.get_user(email)[6]
+
+  def get_pass(self,email):
+    return self.get_user(email)[2]
+    
 
   #change availability
   def is_user_available(self, email):
@@ -156,7 +171,7 @@ class DatabaseManager():
 
 if __name__== '__main__':
   d = DatabaseManager.create()
-  d.register_user("test","marty marty" , 'password', 'ayylmao')
+  d.register_user("test1","marky marky" , 'password', 'ayylmao')
   users = d.fetch_all_users()
   test = users[0]
   print test
@@ -166,3 +181,9 @@ if __name__== '__main__':
   users1 = d.fetch_all_users()
   test1 = users1[0]
   print test1
+  print 'next shoud be same'
+  print d.get_user("test1")
+  print 'name: ' + d.get_name("test1")
+  print 'pass: ' + d.get_pass("test1")
+  print 'bio: ' + d.get_bio("test1")
+  print 'location: ' + d.get_location("test1")
