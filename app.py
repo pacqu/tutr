@@ -48,7 +48,7 @@ def register():
         return render_template("register.html")
 
 @app.route('/login', methods=["GET","POST"])  
-def login():
+def login(message ="login to tut.r"):
     if session.get('user', None):
         return redirect('/dashboard')
     if request.method == "POST":
@@ -60,7 +60,7 @@ def login():
         else:
             return render_template("login.html", message = "Email/Password Incorrect")
     else:
-      return render_template("login.html")
+      return render_template("login.html", message = message)
 
 
 @app.route('/dashboard', methods=["GET","POST"])
@@ -73,21 +73,54 @@ def dashboard():
             elif page == "Register as a Tutor":
                 return render_template()
             elif page == "Edit Account Info":
-                return render_template()
+                return redirect(url_for('settings'))
             elif page == "Log Off":
                 return redirect(url_for('logoff'))
             else:
-                return render_template("dashboard.html", user = session.get('user',None))
+                return render_template("dashboard.html", 
+                                       user = dbm.get_name(session.get('user',None)))
         else:
-            return render_template("dashboard.html", user = session.get('user',None))
+            return render_template("dashboard.html", 
+                                   user = dbm.get_name(session.get('user',None)))
     else:
-        return render_template("login.html", message = "You must be logged-in to access the Dashboard")
+        return login(message="you must log in to access dashboard")
         
 @app.route('/logoff')
 def logoff():
     if session.get('user', None):
         session['user'] = 0
     return redirect('/')
+
+@app.route('/settings', methods=["GET","POST"])
+def settings(message="want to update your info, fam?"):
+    user = session.get('user', None)
+    if user:
+        if request.method == "POST":
+            newname = request.form['editname']
+            newbio = request.form['editbio']
+            newlocation = request.form['editlocation']
+            oldpassword = request.form['oldpassword']
+            newpassword = request.form['newpassword']
+            confirmpassword = request.form['confirmpassword']
+            if oldpassword == "":
+                dbm.edit_user(user, newname, newbio, newlocation)
+                return render_template("settings.html",
+                                       name = dbm.get_name(session.get('user',None)), 
+                                       bioline = dbm.get_bio(session.get('user',None)), 
+                                       location = dbm.get_location(session.get('user',None)), 
+                                       message = "info updated successfully"
+                                       )
+        else:
+            print dbm.get_name(session.get('user',None)) 
+            return render_template("settings.html",
+                                   name = dbm.get_name(session.get('user',None)), 
+                                   bioline = dbm.get_bio(session.get('user',None)), 
+                                   location = dbm.get_location(session.get('user',None)), 
+                                   message = message
+                                   )
+    else:
+        return login(message="you must log in to access dashboard")
+        
 
 if __name__ == '__main__':
   app.debug = True
