@@ -126,7 +126,10 @@ def regastutr():
         if request.method == "POST":
             page = request.form['page']
             if page == "tut.r me up, fam":
-                return
+                if dbm.change_availability(user):
+                    return redirect(url_for('dashboard'))
+            else:
+                return redirect(url_for('dashboard'))
         else:
             return render_template("regat.html", 
                                    user = dbm.get_name(session.get('user',None)) )
