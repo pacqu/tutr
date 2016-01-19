@@ -1,0 +1,40 @@
+<html>
+<<<<<<< HEAD
+<head>
+<link href="main.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans" />
+</head>
+  <body>
+    <div id="screenFiller">
+      <div class="logo">
+	<h1>tut.r</h1>
+      </div>
+    </div>
+
+    <div id="info">
+      <h2> Welcome to tut.r</h2>
+      <p>
+	Have a big test coming up? Need a study buddy or a tutor?<br>
+	Find one with tut.r.<br>
+	Find people in your area who want to study with you.
+      </p>
+      <button id="register" type="button" class="btn-default">
+	Register Now
+      </button>
+=======
+  <head>
+    <link type="test/css" rel="stylesheet" href="../static/main.css"/>
+    <link href='https://fonts.googleapis.com/css?family=Slabo+27px' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id="screenFiller"><div class="logo">tut.r</div>
+    </div>
+
+    <div id="info">
+      <h1>what is tut.r?<br>
+	you.r ultimate study buddy!</h1>
+      <div class="col">hey</div>
+      <div class="col">yes you!</div>
+>>>>>>> 3f4f5d8de9a081fc8f2d09af1a987a2a60c983fb
+    </div>
+</html>
