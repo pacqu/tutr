@@ -92,31 +92,34 @@ def logoff():
     return redirect('/')
 
 @app.route('/settings', methods=["GET","POST"])
-def settings(message="want to update your info, fam?"):
+def settings():
     user = session.get('user', None)
     if user:
         if request.method == "POST":
             newname = request.form['editname']
             newbio = request.form['editbio']
             newlocation = request.form['editlocation']
-            oldpassword = request.form['oldpassword']
-            newpassword = request.form['newpassword']
-            confirmpassword = request.form['confirmpassword']
-            if oldpassword == "":
-                dbm.edit_user(user, newname, newbio, newlocation)
-                return render_template("settings.html",
-                                       name = dbm.get_name(session.get('user',None)), 
-                                       bioline = dbm.get_bio(session.get('user',None)), 
-                                       location = dbm.get_location(session.get('user',None)), 
-                                       message = "info updated successfully"
-                                       )
-        else:
-            print dbm.get_name(session.get('user',None)) 
+            #oldpassword = request.form['oldpassword']
+            #newpassword = request.form['newpassword']
+            #confirmpassword = request.form['confirmpassword']
+            #print "POST WORKS"
+            #print oldpassword
+            #if oldpassword == None:
+            print dbm.edit_user(user, newname, newbio, newlocation)
             return render_template("settings.html",
                                    name = dbm.get_name(session.get('user',None)), 
                                    bioline = dbm.get_bio(session.get('user',None)), 
                                    location = dbm.get_location(session.get('user',None)), 
-                                   message = message
+                                   message = "info updated successfully")
+            #else: 
+            #   return "wow"
+        else:
+            #print dbm.get_name(session.get('user',None)) 
+            return render_template("settings.html",
+                                   name = dbm.get_name(session.get('user',None)), 
+                                   bioline = dbm.get_bio(session.get('user',None)), 
+                                   location = dbm.get_location(session.get('user',None)), 
+                                   message = "want to update your info, fam?"
                                    )
     else:
         return login(message="you must log in to access dashboard")
