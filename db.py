@@ -56,15 +56,15 @@ class DatabaseManager():
     return False
 
   #change user info
-  def edit_user(self, email,fullname, password, bioline, location):
+  def edit_user(self, email,fullname, bioline, location):
     connection = sqlite3.connect(self.database)
     c = connection.cursor()
     try:
       c.execute("""
-                UPDATE users SET fullname=?,password=?,bioline=?,location=?
+                UPDATE users SET fullname=?,bioline=?,location=?
                 WHERE email=?
                 """,
-                (fullname, password, bioline, location, email))
+                (fullname, bioline, location, email))
       connection.commit()
       connection.close()
       return True
