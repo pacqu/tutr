@@ -21,7 +21,8 @@ class DatabaseManager():
               bioline text NOT NULL,
               availability text NOT NULL,
               match text NOT NULL,
-              location text NOT NULL);
+              location text NOT NULL,
+              matcheduser text NOT NULL);
               """)
     connection.commit()
     connection.close()
@@ -34,8 +35,8 @@ class DatabaseManager():
     c = connection.cursor()
     result = True
     try:
-      c.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?)',
-                (email, fullname, Util.hash(password), bioline, 'unavailable', 'unmatched','unknown location' ))
+      c.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                (email, fullname, Util.hash(password), bioline, 'unavailable', 'unmatched','unknown location','unknown user' ))
     except sqlite3.IntegrityError:
       result = False
     connection.commit()
@@ -94,7 +95,9 @@ class DatabaseManager():
 
   def get_pass(self,email):
     return self.get_user(email)[2]
-    
+  
+  def get_matched_user(self,email):
+   return self.get_user(email)[7]
 
   #change availability
   def is_user_available(self, email):
@@ -169,6 +172,23 @@ class DatabaseManager():
     connection.close()
     return users
 
+  def add_matched_user(self, email, matcheduser):
+    connection = sqlite3.connect(self.database)
+    c = connection.cursor()
+    try:
+      c.execute("""                                                                                                                                                                 
+                UPDATE users SET matcheduser=?
+                WHERE email=?
+                """,
+                (matcheduser, email))
+      connection.commit()
+      connection.close()
+      return True
+    except:
+      connection.close()
+      return False
+    
+    
 if __name__== '__main__':
   d = DatabaseManager.create()
   d.register_user("test1","marky marky" , 'password', 'ayylmao')
@@ -187,3 +207,9 @@ if __name__== '__main__':
   print 'pass: ' + d.get_pass("test1")
   print 'bio: ' + d.get_bio("test1")
   print 'location: ' + d.get_location("test1")
+  print 'matched user: ' + d.get_matched_user("test1")
+  print d.add_matched_user("test1", "matched user added")
+  users1 = d.fetch_all_users()
+  test1 = users1[0]
+  print test1
+  print 'matched user: ' + d.get_matched_user("test1")
