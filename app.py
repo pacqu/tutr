@@ -1,4 +1,4 @@
-import jinja2
+import jinja2, json
 from flask import Flask
 from flask import redirect, render_template, request, session, url_for
 
@@ -9,7 +9,10 @@ app = Flask(__name__)
 app.secret_key = 'jgjb3st'
 
 dbm = DatabaseManager.create()
-
+dbm.register_user("tutr","da tutr","pass","hardcoded tutr for testing")
+dbm.change_availability("tutr")
+dbm.register_user("tutee","da tutee","pass","hardcoded tutee for testing")
+print dbm.fetch_all_users()
 
 @app.route('/', methods=["GET","POST"])
 def home():
@@ -84,7 +87,6 @@ def dashboard():
                                    user = dbm.get_name(session.get('user',None)))
     else:
         return login(message="you must log in to access dashboard")
-        
 @app.route('/logoff')
 def logoff():
     if session.get('user', None):
@@ -127,6 +129,8 @@ def regastutr():
             page = request.form['page']
             if page == "tut.r me up, fam":
                 if dbm.change_availability(user):
+                    return redirect(url_for('posttutr'))
+                else:
                     return redirect(url_for('dashboard'))
             else:
                 return redirect(url_for('dashboard'))
@@ -136,6 +140,47 @@ def regastutr():
     else:
         return login(message="you must log in to access tut.r registration")
 
+@app.route('/posttutr', methods=["GET","POST"])
+def posttutr():
+    user = session.get('user', None)
+    if user:
+        if request.method == 'POST':
+            page = request.form['page']
+            if page == 'test':
+                dbm.change_match(user)
+                dbm.change_availability(user)
+                dbm.add_matched_user(user, 'tutee')
+                return render_template('posttutr.html')
+            #probs have to make another route for testing instead of posting
+            #route would just call these methods and return something meaningless
+            #ajax function would just print what's returned to console
+            #this function would be added to a click listener to another button
+            else:
+                return redirect(url_for('dashboard'))
+            return render_template('posttutr.html')
+        else:
+            return render_template('posttutr.html')
+    else:
+        return login(message="you must log in to access tut.r registration")
+
+@app.route('/getstatus', methods =['GET'])
+def getstatus():
+    user = session.get('user', None)
+    matched_user = {'tuteeName':'no user',
+                    'tuteeEmail':'no email',
+                    'tuteeLocation':'no loction',
+                    'tuteeBio':'no bio',
+                    'status':'looking for the perfect tutee'}
+    if dbm.is_user_match(user):
+        tutee = dbm.get_matched_user(user)
+        matched_user['tuteeName'] = dbm.get_name(tutee)
+        matched_user['tuteeEmail'] = tutee
+        matched_user['tuteeLocation'] = dbm.get_location(tutee)
+        matched_user['tuteeBio'] = dbm.get_bio(tutee)
+        matched_user['tuteeBio'] = dbm.get_bio(tutee)
+        matched_user['status'] = 'found the perfect tutee!'
+    return json.JSONEncoder().encode(matched_user)
+        
 if __name__ == '__main__':
-  app.debug = True
-  app.run(host='0.0.0.0',port=8000)
+    app.debug = True
+    app.run(host='0.0.0.0',port=8000)
