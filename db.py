@@ -138,8 +138,9 @@ class DatabaseManager():
     c = connection.cursor()
     c.execute('SELECT match FROM users WHERE email=?',
               (email,))
-    mat = c.fetchone()
+    mat = c.fetchone()[0]
     connection.close()
+    #print 'this is the match var: ' + mat[0]
     if mat == 'matched':
       return True
     return False

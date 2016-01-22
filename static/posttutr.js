@@ -11,6 +11,13 @@ $(document).ready(function() {
 		});
 	};
 	
+	var setMatch = function setMatch(){
+	    $.get("/setmatch", function(data){
+		    console.log(data);
+		});
+	};
+	
+	document.getElementById("matcher").addEventListener('click',setMatch);
 	document.getElementById("getter").addEventListener('click',getStatus);
 	
     });

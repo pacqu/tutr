@@ -145,25 +145,23 @@ def posttutr():
     user = session.get('user', None)
     if user:
         if request.method == 'POST':
-            page = request.form['page']
-            if page == 'test':
-                dbm.change_match(user)
-                dbm.change_availability(user)
-                dbm.add_matched_user(user, 'tutee')
-                return render_template('posttutr.html')
-            #probs have to make another route for testing instead of posting
-            #route would just call these methods and return something meaningless
-            #ajax function would just print what's returned to console
-            #this function would be added to a click listener to another button
-            else:
-                return redirect(url_for('dashboard'))
-            return render_template('posttutr.html')
+            return redirect(url_for('dashboard'))
         else:
             return render_template('posttutr.html')
     else:
         return login(message="you must log in to access tut.r registration")
 
-@app.route('/getstatus', methods =['GET'])
+@app.route('/setmatch', methods = ['GET'])
+def setmatch():
+    user = session.get('user', None)
+    dbm.change_match(user)
+    dbm.change_availability(user)
+    dbm.add_matched_user(user, 'tutee')
+    print dbm.get_user(user)
+    print dbm.get_user('tutee')
+    return dbm.get_matched_user(user) + ' matched with tutr!'
+
+@app.route('/getstatus', methods = ['GET'])
 def getstatus():
     user = session.get('user', None)
     matched_user = {'tuteeName':'no user',
@@ -171,7 +169,9 @@ def getstatus():
                     'tuteeLocation':'no loction',
                     'tuteeBio':'no bio',
                     'status':'looking for the perfect tutee'}
-    if dbm.is_user_match(user):
+    print dbm.get_user(user)
+    print dbm.is_user_match(user)
+    if dbm.is_user_match(user) == True:
         tutee = dbm.get_matched_user(user)
         matched_user['tuteeName'] = dbm.get_name(tutee)
         matched_user['tuteeEmail'] = tutee
@@ -179,6 +179,7 @@ def getstatus():
         matched_user['tuteeBio'] = dbm.get_bio(tutee)
         matched_user['tuteeBio'] = dbm.get_bio(tutee)
         matched_user['status'] = 'found the perfect tutee!'
+    print matched_user
     return json.JSONEncoder().encode(matched_user)
         
 if __name__ == '__main__':
