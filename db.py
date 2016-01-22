@@ -15,13 +15,14 @@ class DatabaseManager():
     connection = sqlite3.connect(DATABASE);
     c = connection.cursor()
     c.execute("""CREATE TABLE IF NOT EXISTS users (
-              username text NOT NULL PRIMARY KEY,
+              email text NOT NULL PRIMARY KEY,
               fullname text NOT NULL,
               password text NOT NULL,
               bioline text NOT NULL,
               availability text NOT NULL,
               match text NOT NULL,
-              location text NOT NULL);
+              location text NOT NULL,
+              matcheduser text NOT NULL);
               """)
     connection.commit()
     connection.close()
@@ -29,13 +30,13 @@ class DatabaseManager():
   
   #methods needed:
   #register user 
-  def register_user(self, username, fullname, password, bioline):
+  def register_user(self, email, fullname, password, bioline):
     connection = sqlite3.connect(self.database);
     c = connection.cursor()
     result = True
     try:
-      c.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?)',
-                (username, fullname, Util.hash(password), bioline, 'unavailable', 'unmatched','unknown' ))
+      c.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+                (email, fullname, Util.hash(password), bioline, 'unavailable', 'unmatched','unknown location','unknown user' ))
     except sqlite3.IntegrityError:
       result = False
     connection.commit()
@@ -43,12 +44,12 @@ class DatabaseManager():
     return result
 
  
-  def is_user_authorized(self, username, password):
+  def is_user_authorized(self, email, password):
     connection = sqlite3.connect(self.database)
     c = connection.cursor()
     # We can assume username is a unique field.
-    c.execute('SELECT password FROM users WHERE username=?',
-              (username,))
+    c.execute('SELECT password FROM users WHERE email=?',
+              (email,))
     actual_password = c.fetchone()
     connection.close()
     if actual_password:
@@ -56,15 +57,15 @@ class DatabaseManager():
     return False
 
   #change user info
-  def edit_user(self, username, fullname, password, bioline, location):
+  def edit_user(self, email,fullname, bioline, location):
     connection = sqlite3.connect(self.database)
     c = connection.cursor()
     try:
       c.execute("""
-                UPDATE users SET fullname=?,password=?,bioline=?,location=?
-                WHERE rowid=?
+                UPDATE users SET fullname=?,bioline=?,location=?
+                WHERE email=?
                 """,
-                (fullname, password, bioline, location, username))
+                (fullname, bioline, location, email))
       connection.commit()
       connection.close()
       return True
@@ -72,21 +73,47 @@ class DatabaseManager():
       connection.close()
       return False
 
+  #get user using email  
+  def get_user(self, email):
+    connection = sqlite3.connect(self.database)
+    c = connection.cursor()
+    c.execute('SELECT * FROM users WHERE email=?',
+              (email,));
+    user = c.fetchone()
+    connection.close()
+    return user
+  
+  #methods to get user info using email
+  def get_name(self,email):
+    return self.get_user(email)[1]
+  
+  def get_bio(self,email):
+    return self.get_user(email)[3]
+
+  def get_location(self,email):
+    return self.get_user(email)[6]
+
+  def get_pass(self,email):
+    return self.get_user(email)[2]
+  
+  def get_matched_user(self,email):
+   return self.get_user(email)[7]
+
   #change availability
-  def is_user_available(self, username):
+  def is_user_available(self, email):
     connection = sqlite3.connect(self.database)
     c = connection.cursor()
     # We can assume username is a unique field.                                                                                                                                      
-    c.execute('SELECT availability FROM users WHERE username=?',
-              (username,))
+    c.execute('SELECT availability FROM users WHERE email=?',
+              (email,))
     avail = c.fetchone()
     connection.close()
     if avail == 'available':
       return True
     return False
     
-  def change_availability(self, username):
-    if self.is_user_available(username):
+  def change_availability(self, email):
+    if self.is_user_available(email):
       avail = 'unavailable'
     else:
       avail = 'available'
@@ -95,9 +122,9 @@ class DatabaseManager():
     try:
       c.execute("""                                                                                                                                                                  
                 UPDATE users SET availability=?                                                                                                          
-                WHERE username=?                                                                                                                                                        
+                WHERE email=?                                                                                                                                                        
                 """,
-                (avail, username))
+                (avail, email))
       connection.commit()
       connection.close()
       return True
@@ -106,19 +133,20 @@ class DatabaseManager():
       return False
 
   #change matched
-  def is_user_match(self, username):
+  def is_user_match(self, email):
     connection = sqlite3.connect(self.database)
     c = connection.cursor()
-    c.execute('SELECT match FROM users WHERE username=?',
-              (username,))
-    mat = c.fetchone()
+    c.execute('SELECT match FROM users WHERE email=?',
+              (email,))
+    mat = c.fetchone()[0]
     connection.close()
+    #print 'this is the match var: ' + mat[0]
     if mat == 'matched':
       return True
     return False
 
-  def change_match(self, username):
-    if self.is_user_match(username):
+  def change_match(self, email):
+    if self.is_user_match(email):
       mat ='unmatched'
     else:
       mat ='matched'
@@ -127,9 +155,9 @@ class DatabaseManager():
     try:
       c.execute("""
                 UPDATE users SET match=?                                                                                                                           
-                WHERE username=?
+                WHERE email=?
                 """,
-                (mat, username))
+                (mat, email))
       connection.commit()
       connection.close()
       return True
@@ -145,9 +173,26 @@ class DatabaseManager():
     connection.close()
     return users
 
+  def add_matched_user(self, email, matcheduser):
+    connection = sqlite3.connect(self.database)
+    c = connection.cursor()
+    try:
+      c.execute("""                                                                                                                                                                 
+                UPDATE users SET matcheduser=?
+                WHERE email=?
+                """,
+                (matcheduser, email))
+      connection.commit()
+      connection.close()
+      return True
+    except:
+      connection.close()
+      return False
+    
+    
 if __name__== '__main__':
   d = DatabaseManager.create()
-  d.register_user("test","marty marty" , 'password', 'ayylmao')
+  d.register_user("test1","marky marky" , 'password', 'ayylmao')
   users = d.fetch_all_users()
   test = users[0]
   print test
@@ -157,3 +202,15 @@ if __name__== '__main__':
   users1 = d.fetch_all_users()
   test1 = users1[0]
   print test1
+  print 'next shoud be same'
+  print d.get_user("test1")
+  print 'name: ' + d.get_name("test1")
+  print 'pass: ' + d.get_pass("test1")
+  print 'bio: ' + d.get_bio("test1")
+  print 'location: ' + d.get_location("test1")
+  print 'matched user: ' + d.get_matched_user("test1")
+  print d.add_matched_user("test1", "matched user added")
+  users1 = d.fetch_all_users()
+  test1 = users1[0]
+  print test1
+  print 'matched user: ' + d.get_matched_user("test1")

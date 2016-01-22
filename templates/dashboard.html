@@ -4,13 +4,41 @@
 
 {% block content %}
 <body>
-
-  <div id="info">
-    <a href="/match"> find a study buddy </a><br>
-    <a href="/regat"> register as a tutor </a><br>
-    <a href="/settings"> bio 'n stuff </a><br>
-  </div>
-
+  <br><br><br><br>
+  <h3>what's up {{user}}</h3>
+  <br><br>
+  <form method="POST">
+    <div id="info">
+      <div>
+      <input type="submit" name="page" value="find a tut.r"
+	     style="background-color:#Ffc687;width:500px;height:50px;                                                                                                              
+		    color:white;font-size:20px;border-radius:15px"
+	     class="btn-default"/>
+      </div>
+      <br><br>
+      <div>
+      <input type="submit" name="page" value="register as a tut.r"
+	     style="background-color:#Ffc687;width:500px;height:50px;                                                                                                              
+                    color:white;font-size:20px;border-radius:15px"
+	     class="btn-default"/>
+      </div>
+      <br><br>
+      <div>
+      <input type="submit" name="page" value="edit account info"
+		style="background-color:#Ffc687;width:500px;height:50px;                                                                                                              
+			    color:white;font-size:20px;border-radius:15px"
+		class="btn-default"/>
+      </div>
+      <br><br>
+      <div>
+	<input type="submit" name="page" value="log off"
+		     style="background-color:#Ffc687;width:200px;height:50px;                                                                                                              
+			    color:white;font-size:20px;border-radius:15px"
+	       class="btn-default"/>
+      </div>
+    </div>
+  </form>
+</body>
   {% endblock %}
 
 
