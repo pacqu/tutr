@@ -7,11 +7,12 @@ $(document).ready(function() {
 		    $.each(data, function(i, tutr){
 			    console.log(tutr);
 			    $("#tutrlist").append("<div>" +
-					      "tut.r name: " + tutr[1] + "<br>" +
-					      "tut.r bio: " + tutr[3] + "<br>" +
-					      '<button id="'+ tutr[0] + '">' +
-					      "this is the perf tutr </button>" +
-					      "</div><br>"
+						  "tut.r name: " + tutr[1] + "<br>" +
+						  "tut.r bio: " + tutr[3] + "<br>" +
+						  "tut.r location: " + tutr[6] + "<br>" +
+						  '<button id="'+ tutr[0] + '">' +
+						  "this is the perf tutr </button>" +
+						  "</div><br>"
 						  )
 				});
 		});
@@ -40,8 +41,19 @@ $(document).ready(function() {
 		console.log(tutr);
 		$("#tutrlist").empty();
 		$("button").detach();
+		$("#matchedtutr").append(  
+					 '<h2 id="tutrstatus"></h2>' + 
+					 '<div>' +
+					 '<p id="tutrName"></p>'+
+					 '<p id="tutrEmail"></p>' +
+					 '<p id="tutrLocation"></p>' +
+					 '<p id="tutrBio"></p>' +
+					 '</div>'
+					   );
 		$.getJSON("/gettutr/" + tutr, function(data){
 			console.log(data);
+			$("#tutrstatus").text("here's your perfect tut.r's info!" +
+				 "return to the dashboard when you're done")
 			$("#tutrName").text(data.tutrName);
 			$("#tutrEmail").text(data.tutrEmail);
 			$("#tutrLocation").text(data.tutrLocation);

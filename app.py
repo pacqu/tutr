@@ -12,11 +12,10 @@ app.secret_key = 'jgjb3st'
 
 dbm = DatabaseManager.create()
 
-if add_hard_code == 0:
-    dbm.register_user("tutr","da tutr","pass","hardcoded tutr for testing")
-    dbm.change_availability("tutr")
-    dbm.register_user("tutee","da tutee","pass","hardcoded tutee for testing")
-    add_hard_code = 1
+change = dbm.register_user("tutr@tutr.com","Jess Tutr","pass","Expert at Bio")
+if change == True:
+    dbm.change_availability("tutr@tutr.com")
+dbm.register_user("tutee","da tutee","pass","hardcoded tutee for testing")
     
 print dbm.fetch_all_users()
 
@@ -184,7 +183,7 @@ def getstatus():
         matched_user['tuteeLocation'] = dbm.get_location(tutee)
         matched_user['tuteeBio'] = dbm.get_bio(tutee)
         matched_user['status'] = 'found the perfect tutee!'
-    print matched_user
+    #print matched_user
     return json.JSONEncoder().encode(matched_user)
         
 @app.route('/regastutee', methods=["GET","POST"])
@@ -237,7 +236,7 @@ def gettutr(tutr=''):
     #change tutr availability
     #print dbm.get_user(tutr)
     #print dbm.is_user_available(tutr)
-    #print dbm.change_availability(tutr)
+    dbm.change_availability(tutr)
     #print dbm.is_user_available(tutr)
     matched_tutr = {'tutrName': dbm.get_name(tutr),
                     'tutrEmail': tutr,
@@ -249,3 +248,4 @@ def gettutr(tutr=''):
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0',port=8000)
+    
