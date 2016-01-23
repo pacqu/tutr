@@ -28,6 +28,7 @@ class DatabaseManager():
     connection.close()
     return DatabaseManager(DATABASE)
   
+
   #methods needed:
   #register user 
   def register_user(self, email, fullname, password, bioline):
@@ -36,14 +37,13 @@ class DatabaseManager():
     result = True
     try:
       c.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                (email, fullname, Util.hash(password), bioline, 'unavailable', 'unmatched','unknown location','unknown user' ))
+                (email, fullname, Util.hash(password), bioline, 'unavailable', 'unmatched','unknown location','none' ))
     except sqlite3.IntegrityError:
       result = False
     connection.commit()
     connection.close()
     return result
-
- 
+  
   def is_user_authorized(self, email, password):
     connection = sqlite3.connect(self.database)
     c = connection.cursor()
@@ -106,14 +106,14 @@ class DatabaseManager():
     # We can assume username is a unique field.                                                                                                                                      
     c.execute('SELECT availability FROM users WHERE email=?',
               (email,))
-    avail = c.fetchone()
+    avail = c.fetchone()[0]
     connection.close()
     if avail == 'available':
       return True
     return False
     
   def change_availability(self, email):
-    if self.is_user_available(email):
+    if self.is_user_available(email) == True:
       avail = 'unavailable'
     else:
       avail = 'available'
@@ -146,7 +146,7 @@ class DatabaseManager():
     return False
 
   def change_match(self, email):
-    if self.is_user_match(email):
+    if self.is_user_match(email) == True:
       mat ='unmatched'
     else:
       mat ='matched'
