@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% block title %}tutr screen{% endblock %}
+
+{% block content %}
+<body>
+  <br><br><br><br><br>
+  
+  <h3>find yourself the perfect tut.r!</h3>
+
+  {% for user in availusers %}
+  <br>
+  <div id="d{{user[0]}}">
+    tut.r name: {{user[1]}} <br>
+    tut.r bio: {{user[3]}} <br>
+    <button id="{{user[0]}}">this is the perf tutr/button>
+  </div>
+  <br>
+  {% endfor %}
+
+  <br>
+  
+  <h2>tutr information</h2>
+  <div>
+    <p id="tutrName">tut.r name</p>
+    <p id="tutrEmail">tut.r email</p>
+    <p id="tutrLocation">tut.r location</p>
+    <p id="tutrBio">tut.r bio</p>
+  </div>
+
+  <br>
+  <form method="POST">
+    
+    <div class="form-group">
+      return to dashboard <br>
+      <input type="submit" name="page" value="dashboard"/><br>
+    </div>
+    <br>
+    
+  </form>
+  <br>
+
+</body>
+{% endblock %} 

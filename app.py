@@ -72,7 +72,7 @@ def dashboard():
         if request.method == "POST":
             page = request.form['page']
             if page == "find a tut.r":
-                return render_template()
+                return redirect(url_for('regastutee'))
             elif page == "register as a tut.r":
                 return redirect(url_for('regastutr'))
             elif page == "edit account info":
@@ -80,6 +80,8 @@ def dashboard():
             elif page == "log off":
                 return redirect(url_for('logoff'))
             else:
+                ut = session.get('user', None)
+                print 'user is: ' + ut
                 return render_template("dashboard.html", 
                                        user = dbm.get_name(session.get('user',None)))
         else:
@@ -182,6 +184,44 @@ def getstatus():
     print matched_user
     return json.JSONEncoder().encode(matched_user)
         
+@app.route('/regastutee', methods=["GET","POST"])
+def regastutee():
+    user = session.get('user', None)
+    if user:
+        if request.method == "POST":
+            page = request.form['page']
+            if page == "tutee me up, fam":
+                return redirect(url_for('posttutee'))
+            else:
+                return redirect(url_for('dashboard'))
+        else:
+            return render_template("regtutee.html",
+                                   user = dbm.get_name(session.get('user',None)) )
+    else:
+        return login(message="you must log in to access tut.r registration")
+
+@app.route('/postutee', methods=["GET","POST"])
+def posttutee():
+    user = session.get('user', None)
+    if user:
+        if request.method == 'POST':
+            return redirect(url_for('dashboard'))
+        else:
+            availusers = dbm.get_available_users()
+            return render_template('posttutee.html',availusers = availusers,
+                                   user = dbm.get_name(session.get('user',None)) )
+    else:
+        return login(message="you must log in to access tutee registration")
+
+@app.route('/gettutr/<tutr>', methods=["GET"])
+def gettutr(tutr=''):
+    '''What This Should Do:
+    - Takes Tutr's Username (Email)
+    - Sets Tutee & Tutr's Matched/Macthed Users Fields
+    - Makes Tutr unavailable
+    - Sends JSON containing Tutr's info
+    '''
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0',port=8000)

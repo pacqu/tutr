@@ -19,5 +19,6 @@ $(document).ready(function() {
 	
 	document.getElementById("matcher").addEventListener('click',setMatch);
 	document.getElementById("getter").addEventListener('click',getStatus);
+	setInterval(getStatus,100);
 	
     });
