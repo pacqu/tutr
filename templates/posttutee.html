@@ -6,19 +6,21 @@
   <br><br><br><br><br>
   
   <h3>find yourself the perfect tut.r!</h3>
-
+  <!--
   {% for user in availusers %}
   <br>
   <div id="d{{user[0]}}">
     tut.r name: {{user[1]}} <br>
     tut.r bio: {{user[3]}} <br>
-    <button id="{{user[0]}}">this is the perf tutr/button>
+    <button id="{{user[0]}}">this is the perf tutr</button>
   </div>
   <br>
   {% endfor %}
-
+  -->
   <br>
-  
+  <div id="tutrlist">
+  </div>
+      
   <h2>tutr information</h2>
   <div>
     <p id="tutrName">tut.r name</p>
@@ -38,6 +40,7 @@
     
   </form>
   <br>
-
+  <script src="/../static/jquery.js"></script>
+  <script src="../static/posttutee.js"></script>
 </body>
 {% endblock %} 

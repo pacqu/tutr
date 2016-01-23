@@ -5,13 +5,19 @@ from flask import redirect, render_template, request, session, url_for
 from db import DatabaseManager
 from util import Util
 
+add_hard_code = 0
+
 app = Flask(__name__)
 app.secret_key = 'jgjb3st'
 
 dbm = DatabaseManager.create()
-dbm.register_user("tutr","da tutr","pass","hardcoded tutr for testing")
-dbm.change_availability("tutr")
-dbm.register_user("tutee","da tutee","pass","hardcoded tutee for testing")
+
+if add_hard_code == 0:
+    dbm.register_user("tutr","da tutr","pass","hardcoded tutr for testing")
+    dbm.change_availability("tutr")
+    dbm.register_user("tutee","da tutee","pass","hardcoded tutee for testing")
+    add_hard_code = 1
+    
 print dbm.fetch_all_users()
 
 @app.route('/', methods=["GET","POST"])
@@ -37,11 +43,9 @@ def register():
         password = request.form['password']
         cpassword = request.form['confirmPassword']
         bioline = request.form['bioline']
-        #bioline = "testing fam"
         if  password == cpassword:
             if dbm.register_user(email, fullname, password, bioline):
                 session['user']=email
-                #return str(dbm.fetch_all_users())
                 return redirect('/dashboard')
             else:
                 return render_template("register.html", message = "email already used")
@@ -69,6 +73,7 @@ def login(message ="login to tut.r"):
 @app.route('/dashboard', methods=["GET","POST"])
 def dashboard():
     if session.get('user', None):
+        print dbm.fetch_all_users()
         if request.method == "POST":
             page = request.form['page']
             if page == "find a tut.r":
@@ -81,7 +86,6 @@ def dashboard():
                 return redirect(url_for('logoff'))
             else:
                 ut = session.get('user', None)
-                print 'user is: ' + ut
                 return render_template("dashboard.html", 
                                        user = dbm.get_name(session.get('user',None)))
         else:
@@ -105,7 +109,7 @@ def settings():
                 newname = request.form['editname']
                 newbio = request.form['editbio']
                 newlocation = request.form['editlocation']
-                print dbm.edit_user(user, newname, newbio, newlocation)
+                dbm.edit_user(user, newname, newbio, newlocation)
                 return render_template("settings.html",
                                        name = dbm.get_name(session.get('user',None)), 
                                        bioline = dbm.get_bio(session.get('user',None)), 
@@ -147,6 +151,8 @@ def posttutr():
     user = session.get('user', None)
     if user:
         if request.method == 'POST':
+            dbm.change_match(user)
+            dbm.add_matched_user(user, 'none')
             return redirect(url_for('dashboard'))
         else:
             return render_template('posttutr.html')
@@ -159,8 +165,6 @@ def setmatch():
     dbm.change_match(user)
     dbm.change_availability(user)
     dbm.add_matched_user(user, 'tutee')
-    print dbm.get_user(user)
-    print dbm.get_user('tutee')
     return dbm.get_matched_user(user) + ' matched with tutr!'
 
 @app.route('/getstatus', methods = ['GET'])
@@ -171,14 +175,13 @@ def getstatus():
                     'tuteeLocation':'no loction',
                     'tuteeBio':'no bio',
                     'status':'looking for the perfect tutee'}
-    print dbm.get_user(user)
-    print dbm.is_user_match(user)
+    #print dbm.get_user(user)
+    #print dbm.is_user_match(user)
     if dbm.is_user_match(user) == True:
         tutee = dbm.get_matched_user(user)
         matched_user['tuteeName'] = dbm.get_name(tutee)
         matched_user['tuteeEmail'] = tutee
         matched_user['tuteeLocation'] = dbm.get_location(tutee)
-        matched_user['tuteeBio'] = dbm.get_bio(tutee)
         matched_user['tuteeBio'] = dbm.get_bio(tutee)
         matched_user['status'] = 'found the perfect tutee!'
     print matched_user
@@ -207,11 +210,16 @@ def posttutee():
         if request.method == 'POST':
             return redirect(url_for('dashboard'))
         else:
-            availusers = dbm.get_available_users()
-            return render_template('posttutee.html',availusers = availusers,
+            return render_template('posttutee.html',
                                    user = dbm.get_name(session.get('user',None)) )
     else:
         return login(message="you must log in to access tutee registration")
+
+@app.route('/gettutrlist',methods=["GET"])
+def gettutrlist():
+    availusers = dbm.get_available_users()
+    #print availusers
+    return json.JSONEncoder().encode(availusers)
 
 @app.route('/gettutr/<tutr>', methods=["GET"])
 def gettutr(tutr=''):
@@ -221,6 +229,22 @@ def gettutr(tutr=''):
     - Makes Tutr unavailable
     - Sends JSON containing Tutr's info
     '''
+    user = session.get('user', None)
+    sendtutr = dbm.get_user(tutr)
+    #set tutr/tutee as each other's matched users
+    dbm.add_matched_user(user,tutr)
+    dbm.add_matched_user(tutr,user)
+    #change tutr availability
+    #print dbm.get_user(tutr)
+    #print dbm.is_user_available(tutr)
+    #print dbm.change_availability(tutr)
+    #print dbm.is_user_available(tutr)
+    matched_tutr = {'tutrName': dbm.get_name(tutr),
+                    'tutrEmail': tutr,
+                    'tutrLocation':dbm.get_location(tutr),
+                    'tutrBio': dbm.get_bio(tutr),
+                    'tutrAvail': dbm.get_user(tutr)[4]}
+    return json.JSONEncoder().encode(matched_tutr)
 
 if __name__ == '__main__':
     app.debug = True
