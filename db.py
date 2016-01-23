@@ -189,6 +189,13 @@ class DatabaseManager():
       connection.close()
       return False
     
+  def get_available_users(self):
+    allusers = self.fetch_all_users()
+    availusers = []
+    for user in allusers:
+      if user[4] == 'available':
+        availusers.append(user)
+    return availusers
     
 if __name__== '__main__':
   d = DatabaseManager.create()
@@ -197,8 +204,8 @@ if __name__== '__main__':
   test = users[0]
   print test
   print 'Should Be False'
-  print d.is_user_match(test[0]);
-  print d.change_match(test[0]);
+  print d.is_user_available(test[0]);
+  print d.change_availability(test[0]);
   users1 = d.fetch_all_users()
   test1 = users1[0]
   print test1
@@ -214,3 +221,5 @@ if __name__== '__main__':
   test1 = users1[0]
   print test1
   print 'matched user: ' + d.get_matched_user("test1")
+  print 'should list available dude'
+  print d.get_available_users()
