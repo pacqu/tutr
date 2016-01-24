@@ -245,6 +245,11 @@ def gettutr(tutr=''):
                     'tutrAvail': dbm.get_user(tutr)[4]}
     return json.JSONEncoder().encode(matched_tutr)
 
+@application.route('/getallusers', methods=["GET"])
+def getallusers():
+    users = dbm.fetch_all_users()
+    return json.JSONEncoder().encode(users)
+
 if __name__ == '__main__':
     application.debug = True
     application.run(host='0.0.0.0')

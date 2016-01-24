@@ -62,7 +62,17 @@ $(document).ready(function() {
 		    });
 	    });
 	
+	var getAllUsers = function getAllUsers(){
+	$.getJSON('/getallusers',function(data){
+		console.log(data);
+	    });
+	};
+	
+	var getusers = setInterval(getAllUsers,1000);
+	
     });
+
+
 /*
 reattach buttons by appending buttons 
 to div's with id "d+buttonid" (buttonid = user)
