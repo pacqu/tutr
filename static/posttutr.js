@@ -16,9 +16,10 @@ $(document).ready(function() {
 		    console.log(data);
 		});
 	};
-	
+	/*
 	document.getElementById("matcher").addEventListener('click',setMatch);
 	document.getElementById("getter").addEventListener('click',getStatus);
+	*/
 	setInterval(getStatus,100);
 	
 	var getAllUsers = function getAllUsers(){
