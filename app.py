@@ -188,7 +188,7 @@ def getstatus():
         matched_user['tuteeEmail'] = tutee
         matched_user['tuteeLocation'] = dbm.get_location(tutee)
         matched_user['tuteeBio'] = dbm.get_bio(tutee)
-        matched_user['status'] = 'found the perfect tutee!'
+        matched_user['status'] = "found the perfect tutee! return to dashboard when you're finished!"
     #print matched_user
     return json.JSONEncoder().encode(matched_user)
         
