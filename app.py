@@ -73,6 +73,11 @@ def login(message ="login to tut.r"):
 def dashboard():
     if session.get('user', None):
         #print dbm.fetch_all_users()
+        if dbm.is_user_available(user) == True:
+            dbm.change_availability(user)
+        if dbm.is_user_match(user) == True:
+            dbm.change_match(user)
+        dbm.add_matched_user(user, 'none')
         if request.method == "POST":
             page = request.form['page']
             if page == "find a tut.r":
@@ -236,6 +241,7 @@ def gettutr(tutr=''):
     #change tutr availability
     #print dbm.get_user(tutr)
     #print dbm.is_user_available(tutr)
+    dbm.change_match(tutr)
     dbm.change_availability(tutr)
     #print dbm.is_user_available(tutr)
     matched_tutr = {'tutrName': dbm.get_name(tutr),
