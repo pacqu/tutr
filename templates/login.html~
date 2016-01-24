@@ -14,14 +14,12 @@
       <label for="inputEmail">Email:</label>
 	<input tpye="text" class="form-control"
 	       id="inputEmail" placeholder="email"
-	       width=50px
 	       name="email"/>
       </div>
       <div class="form-group">
         <label for="inputPass">Password:</label>
         <input type="password"
                class="form-control"
-	       width=50px
                id="inputPass"
                placeholder="password"
                name="password" /> <br>

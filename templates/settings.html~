@@ -8,14 +8,13 @@
   
   <div id="info">
     <h1>{{message}}</h1>
-<h3></h3>
+
     <form method="POST">
       
       <div class="form-group">
 	<label for="name"> edit your name: </label>
 	<input type="text" 
 	       class="form-control" 
-	       width=50px
 	       id="name" 
 	       value="{{name}}" 
 	       name="editname" /> <br>  
@@ -26,7 +25,6 @@
 	<input type="text" 
 	       class="form-control" 
 	       id="bio" 
-	       width=50px
 	       value="{{bioline}}" 
 	       name="editbio" /><br>
       </div>
@@ -36,7 +34,6 @@
 	<input type="text" 
 	       class="form-control" 
 	       id="place" 
-	       width=50px
 	       value="{{location}}" 
 	       name="editlocation" /> <br>
       </div>
