@@ -7,8 +7,8 @@ from util import Util
 
 add_hard_code = 0
 
-app = Flask(__name__)
-app.secret_key = 'jgjb3st'
+application = Flask(__name__)
+application.secret_key = 'jgjb3st'
 
 dbm = DatabaseManager.create()
 
@@ -19,7 +19,7 @@ dbm.register_user("tutee","da tutee","pass","hardcoded tutee for testing")
     
 print dbm.fetch_all_users()
 
-@app.route('/', methods=["GET","POST"])
+@application.route('/', methods=["GET","POST"])
 def home():
     if session.get('user', None):
         return redirect('/dashboard')
@@ -32,7 +32,7 @@ def home():
     else:
         return render_template("index.html")
 
-@app.route('/register', methods=["GET","POST"])
+@application.route('/register', methods=["GET","POST"])
 def register():
     if session.get('user', None):
         return redirect('/dashboard')
@@ -53,7 +53,7 @@ def register():
     else:
         return render_template("register.html")
 
-@app.route('/login', methods=["GET","POST"])  
+@application.route('/login', methods=["GET","POST"])  
 def login(message ="login to tut.r"):
     if session.get('user', None):
         return redirect('/dashboard')
@@ -69,7 +69,7 @@ def login(message ="login to tut.r"):
       return render_template("login.html", message = message)
 
 
-@app.route('/dashboard', methods=["GET","POST"])
+@application.route('/dashboard', methods=["GET","POST"])
 def dashboard():
     if session.get('user', None):
         print dbm.fetch_all_users()
@@ -92,13 +92,13 @@ def dashboard():
                                    user = dbm.get_name(session.get('user',None)))
     else:
         return login(message="you must log in to access dashboard")
-@app.route('/logoff')
+@application.route('/logoff')
 def logoff():
     if session.get('user', None):
         session['user'] = 0
     return redirect('/')
 
-@app.route('/settings', methods=["GET","POST"])
+@application.route('/settings', methods=["GET","POST"])
 def settings():
     user = session.get('user', None)
     if user:
@@ -126,7 +126,7 @@ def settings():
     else:
         return login(message="you must log in to access dashboard")
         
-@app.route('/regastutr', methods=["GET","POST"])
+@application.route('/regastutr', methods=["GET","POST"])
 def regastutr():
     user = session.get('user', None)
     if user:
@@ -145,7 +145,7 @@ def regastutr():
     else:
         return login(message="you must log in to access tut.r registration")
 
-@app.route('/posttutr', methods=["GET","POST"])
+@application.route('/posttutr', methods=["GET","POST"])
 def posttutr():
     user = session.get('user', None)
     if user:
@@ -158,7 +158,7 @@ def posttutr():
     else:
         return login(message="you must log in to access tut.r registration")
 
-@app.route('/setmatch', methods = ['GET'])
+@application.route('/setmatch', methods = ['GET'])
 def setmatch():
     user = session.get('user', None)
     dbm.change_match(user)
@@ -166,7 +166,7 @@ def setmatch():
     dbm.add_matched_user(user, 'tutee')
     return dbm.get_matched_user(user) + ' matched with tutr!'
 
-@app.route('/getstatus', methods = ['GET'])
+@application.route('/getstatus', methods = ['GET'])
 def getstatus():
     user = session.get('user', None)
     matched_user = {'tuteeName':'no user',
@@ -186,7 +186,7 @@ def getstatus():
     #print matched_user
     return json.JSONEncoder().encode(matched_user)
         
-@app.route('/regastutee', methods=["GET","POST"])
+@application.route('/regastutee', methods=["GET","POST"])
 def regastutee():
     user = session.get('user', None)
     if user:
@@ -202,7 +202,7 @@ def regastutee():
     else:
         return login(message="you must log in to access tut.r registration")
 
-@app.route('/postutee', methods=["GET","POST"])
+@application.route('/postutee', methods=["GET","POST"])
 def posttutee():
     user = session.get('user', None)
     if user:
@@ -214,13 +214,13 @@ def posttutee():
     else:
         return login(message="you must log in to access tutee registration")
 
-@app.route('/gettutrlist',methods=["GET"])
+@application.route('/gettutrlist',methods=["GET"])
 def gettutrlist():
     availusers = dbm.get_available_users()
     #print availusers
     return json.JSONEncoder().encode(availusers)
 
-@app.route('/gettutr/<tutr>', methods=["GET"])
+@application.route('/gettutr/<tutr>', methods=["GET"])
 def gettutr(tutr=''):
     '''What This Should Do:
     - Takes Tutr's Username (Email)
@@ -246,6 +246,6 @@ def gettutr(tutr=''):
     return json.JSONEncoder().encode(matched_tutr)
 
 if __name__ == '__main__':
-    app.debug = True
-    app.run(host='0.0.0.0',port=8000)
+    application.debug = True
+    application.run(host='0.0.0.0')
     
