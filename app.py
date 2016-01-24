@@ -72,7 +72,7 @@ def login(message ="login to tut.r"):
 @application.route('/dashboard', methods=["GET","POST"])
 def dashboard():
     if session.get('user', None):
-        print dbm.fetch_all_users()
+        #print dbm.fetch_all_users()
         if request.method == "POST":
             page = request.form['page']
             if page == "find a tut.r":
