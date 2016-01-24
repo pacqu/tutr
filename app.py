@@ -71,7 +71,8 @@ def login(message ="login to tut.r"):
 
 @application.route('/dashboard', methods=["GET","POST"])
 def dashboard():
-    if session.get('user', None):
+    user = session.get('user', None):
+    if user:
         #print dbm.fetch_all_users()
         if dbm.is_user_available(user) == True:
             dbm.change_availability(user)
