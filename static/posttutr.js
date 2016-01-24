@@ -21,4 +21,13 @@ $(document).ready(function() {
 	document.getElementById("getter").addEventListener('click',getStatus);
 	setInterval(getStatus,100);
 	
+	var getAllUsers = function getAllUsers(){
+	    $.getJSON('/getallusers',function(data){
+		    console.log(data);
+		});
+        };
+	
+        var getusers = setInterval(getAllUsers,1000);
+
+	
     });
