@@ -109,8 +109,8 @@ def settings():
     user = session.get('user', None)
     if user:
         if request.method == "POST":
-            page = request.form['page']
-            if page == "submit":
+            page = request.form['submit']
+            if page == "save changes":
                 newname = request.form['editname']
                 newbio = request.form['editbio']
                 newlocation = request.form['editlocation']
