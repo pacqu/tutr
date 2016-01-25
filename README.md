@@ -1,6 +1,8 @@
 # tutr  
 ##what is tut.r? you.r ultimate study buddy!
 tut.r is a tinder-inspired web app that will match students wanting to find a study buddy || study group || tutor || tutee!
+hosted on: tutr.mooo.com
+tut.r video: https://www.youtube.com/watch?v=cEXAUxgVSVE
 ##how it'll work:
 * users indicate their availability just by opening the app and selecting how they want to study (one to one || group).
 * users will then scroll through available potential study mates in their area and choose based on mutual study topics and interests that are displayed with the potential study mate's info.
@@ -19,29 +21,35 @@ tut.r is a tinder-inspired web app that will match students wanting to find a st
 ##who's making it all work:
 | role | name | username |
 -------|------|------
-| leader | justin pacquing | @stinographer |
+| leader & middleware| justin pacquing | @stinographer |
 | frontend | jeanne locker | @jlox |
 | backend | gregory redozubov | @gredoz |
 
-##what we need to do:
-- signup page
-- finish up front front page
-- dashboard (settings, find a tutor, become a tutor, etc.)
-- settings page
-- matching page
-- register-as-tutor page
-- database - names, subject, (for now input location), bio, matched/not matched, seen/not seen, picture, (number/skype???)
-- ajax call for finding a match - goes through database
-- chat (how it's done: blog style page, refreshed by ajax)
-- connection to facebook (maybe)
+##foundational stuff:
+- [x] signup page
+- [x] front page
+- [x] dashboard (settings, find a tutor, become a tutor, etc.)
+- [x] settings page
+- [x] matching page
+- [x] register-as-tutr page
+- [x] database - unique email, name, subject, inputted location, bio, availablility, matched/not matched, user matched with
+- [x] ajax calls for finding a match - goes through database
+
+##extra stuff we want to get done eventually:
+- [] database holds more contact info - phone number, skype, facebook, etc.
+- [] chat (how it's done: inputted through forms, sent/refreshed by ajax)
+- [] allow the option to pair with a fellow study buddy rather than create a tutr/tutee dynamic
+- [] organize by location | use some sort of location api
+- [] connection to facebook (longshot)
 
 ##timetable
-- 01/07 - database
-- 01/08 - template for signup
-- 01/08 - template for intro
-- 01/08 - main page logged
-- 01/10 - all templates (edit bio, find tutors)
-- 01/14 - ajax calls (chat, tutr search)
-- 01/17 - polish results
-- 01/20 - VIDEO car drive machine
-- 01/22 - due date
+- [x] 01/07 - database
+- [x] 01/08 - template for signup
+- [x] 01/08 - template for intro
+- [x] 01/08 - main page logged
+- [x] 01/15 - all templates (edit bio, find tutors)
+- [x] 01/17 - middleware (up to that point) finished
+- [x] 01/20 - ajax calls (tutr search)
+- [x] 01/22 - polish results
+- [x] 01/24 - video done
+- [x] 01/25 - due date
