@@ -2,7 +2,7 @@
 ##what is tut.r? you.r ultimate study buddy!
 tut.r is a tinder-inspired web app that will match students wanting to find a study buddy || study group || tutor || tutee!
 
-hosted on: tutr.mooo.com
+hosted on: http://tutr.mooo.com
 
 tut.r video: https://www.youtube.com/watch?v=cEXAUxgVSVE
 ##how it'll work:
