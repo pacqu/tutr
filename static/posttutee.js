@@ -10,7 +10,7 @@ $(document).ready(function() {
 						  "tut.r name: " + tutr[1] + "<br>" +
 						  "tut.r bio: " + tutr[3] + "<br>" +
 						  "tut.r location: " + tutr[6] + "<br>" +
-						  '<button id="'+ tutr[0] + '"style="background-color:#Ffc687;width:500px;height:50px;		      color:white;font-size:20px;border-radius:15px">' +
+						  '<button id="'+ tutr[0] + '" style="background-color:#Ffc687;width:500px;height:50px;		      color:white;font-size:20px;border-radius:15px">' +
 						  "this is the perf tutr </button>" +
 						  "</div><br>"
 						  )
