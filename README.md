@@ -39,6 +39,7 @@ tut.r video: https://www.youtube.com/watch?v=cEXAUxgVSVE
 
 ##extra stuff we want to get done eventually:
 - [ ] database holds more contact info - phone number, skype, facebook, etc.
+- [ ] stacking effect when picking tutrs
 - [ ] chat (how it's done: inputted through forms, sent/refreshed by ajax)
 - [ ] allow the option to pair with a fellow study buddy rather than create a tutr/tutee dynamic
 - [ ] organize by location | use some sort of location api
